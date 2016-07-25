@@ -1,8 +1,6 @@
-<snippet>
-  <content><![CDATA[
-# ${1:Project Name}
+# Infrastructure-ansible
 
-TODO: Write a project description
+A collection of system orchstration scripts using  ansible.
 
 ## Installation
 
@@ -31,6 +29,3 @@ TODO: Write credits
 ## License
 
 TODO: Write license
-]]></content>
-  <tabTrigger>readme</tabTrigger>
-</snippet>
