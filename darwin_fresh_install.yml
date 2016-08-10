@@ -1,26 +1,67 @@
 ---
 # darwin_fresh_install.yml - local installation of dev env on Mac OS X Yosemite
-- name: Get the locally installed version of virtualbox
-  shell: which virtualbox
-  register: vbox_ver
+
+#initialize vars to false
+# Using yml var syntax creates "real" booleans.
+- set_fact:
+    install_vbox: False
+    upgrade_vbox: False
+    install_vagrant: False
+    upgrade_vagrant: False
+
+- name: Check if virtualbox is installed
+  shell: which VBoxManage
+  register: vbox_installed
   ignore_errors: True
 
-- debug: var=vbox_ver
+#- debug: var=vbox_installed
 
-# "Complex" syntax (Declare key/val as dict) creates "real" booleans.
+- name: Check if vagrant is installed
+  shell: which vagrant
+  register: vagrant_installed
+  ignore_errors: True
+
+#- debug: var=vagrant_installed
+
+#Override those default facts accordingly
 - set_fact:
-    install_vbox: true
-  when: vbox_ver.rc != 0
+    install_vbox: True
+  when: vbox_installed.rc != 0
 
 - set_fact:
-    upgrade_vbox: true
-  when: vbox_ver.rc == 0
+    upgrade_vbox: True
+  when: vbox_installed.rc == 0
 
-# TODO: work out the upgrade process
-- debug: var=install_vbox
+- set_fact:
+    install_vagrant: True
+  when: vagrant_installed.rc != 0
 
-- debug: var=upgrade_vbox
-  when: upgrade_vbox is defined
+- set_fact:
+    upgrade_vagrant: True
+    when: vagrant_installed.rc == 0
 
-- include: darwin_install_vbox.yml
-  when: install_vbox | bool
+# TODO: work out the upgrade process for both
+#- debug: var=upgrade_vbox
+#  when: upgrade_vbox is defined
+
+#- debug: var=upgrade_vagrant
+#  when: upgrade_vagrant is defined
+
+- name: ensure that homebrew cask is installed
+  homebrew:
+    name: cask
+    state: present
+
+- name: Install virtualbox via homebrew_cask
+  homebrew_cask:
+    name: virtualbox
+    state: present
+  when: install_vbox|bool
+
+- name: Install vagrant via homebrew_cask
+  homebrew_cask:
+    name: vagrant
+    state: present
+  when: install_vagrant|bool
+
+

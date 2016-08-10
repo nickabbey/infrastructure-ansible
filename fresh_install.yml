@@ -1,5 +1,6 @@
 ---
-# fresh_install.yml.  An ansible play for configuring my local environment
+# fresh_install.yml
+# An ansible play for configuring my local dev environment
 - hosts: 127.0.0.1
   connection: local
   vars:
