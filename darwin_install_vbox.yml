@@ -1,0 +1,7 @@
+---
+# darwin_install_vbox.yml
+# Runs when no vbox is found
+- name: clone the repo for geerlingguy's homebrew role
+  git:
+      repo: "git@github.com:geerlingguy/ansible-role-homebrew.git"
+      dest: "{{base_dir}}/roles/ansible-role-homebrew"

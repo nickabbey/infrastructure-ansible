@@ -1,0 +1,10 @@
+---
+# fresh_install.yml.  An ansible play for configuring my local environment
+- hosts: 127.0.0.1
+  connection: local
+  vars:
+    base_dir: "~/repos/infrastructure"
+
+  tasks:
+    - include: darwin_fresh_install.yml
+      when: ansible_os_family == "Darwin"

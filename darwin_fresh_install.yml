@@ -1,0 +1,26 @@
+---
+# darwin_fresh_install.yml - local installation of dev env on Mac OS X Yosemite
+- name: Get the locally installed version of virtualbox
+  shell: which virtualbox
+  register: vbox_ver
+  ignore_errors: True
+
+- debug: var=vbox_ver
+
+# "Complex" syntax (Declare key/val as dict) creates "real" booleans.
+- set_fact:
+    install_vbox: true
+  when: vbox_ver.rc != 0
+
+- set_fact:
+    upgrade_vbox: true
+  when: vbox_ver.rc == 0
+
+# TODO: work out the upgrade process
+- debug: var=install_vbox
+
+- debug: var=upgrade_vbox
+  when: upgrade_vbox is defined
+
+- include: darwin_install_vbox.yml
+  when: install_vbox | bool
