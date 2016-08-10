@@ -63,5 +63,3 @@
     name: vagrant
     state: present
   when: install_vagrant|bool
-
-
